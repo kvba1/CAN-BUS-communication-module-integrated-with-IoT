@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "esp32CANBUS": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7294",
+      "launchBrowser": false
+    }
+  }
+}
