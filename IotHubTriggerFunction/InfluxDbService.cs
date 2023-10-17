@@ -2,6 +2,8 @@
 using esp32CANBUS.Models;
 using InfluxDB3.Client;
 using InfluxDB3.Client.Write;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using System;
 using System.Threading.Tasks;
 
 namespace esp32CANBUS
@@ -9,12 +11,15 @@ namespace esp32CANBUS
     internal class InfluxDbService : IInfluxDbService
     {
         private readonly InfluxDBClient _client;
-        private const string _bucket = "CarData";
-        private const string _org = "dev";
 
-        public InfluxDbService(string influxDbUrl, string token)
+        private readonly string bucket = Environment.GetEnvironmentVariable("bucket");
+        private readonly string org = Environment.GetEnvironmentVariable("org");
+        private readonly string url = Environment.GetEnvironmentVariable("url");
+        private readonly string token = Environment.GetEnvironmentVariable("token");
+
+        public InfluxDbService()
         {
-            _client = new InfluxDBClient(influxDbUrl, token);
+            _client = new InfluxDBClient(url,token,org,bucket);
         }
 
         public async Task SendDataAsync(CarDataModel data)
@@ -27,9 +32,8 @@ namespace esp32CANBUS
             .SetField("EngineTemperature", data.Data.EngineTemperature)
             .SetTimestamp(data.Timestamp);
 
-            await _client.WritePointAsync(point, _bucket);
+           await _client.WritePointAsync(point);
         }
     }
-
 
 }
