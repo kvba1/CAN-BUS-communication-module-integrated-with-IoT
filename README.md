@@ -21,9 +21,13 @@ To request data, the code constructs and sends a message over the CAN bus. This 
 For example, to request engine RPM:
 
 CAN.beginPacket(0x7df, 8);
+
 CAN.write(0x02); // number of additional bytes
+
 CAN.write(0x01); // mode "Show Current Data"
+
 CAN.write(0x0C); // PID for engine RPM
+
 CAN.endPacket();
 
 Receiving Data over CAN Bus:
