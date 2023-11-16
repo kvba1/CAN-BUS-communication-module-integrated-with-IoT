@@ -15,7 +15,7 @@ namespace esp32CANBUS.Models
         [JsonProperty("timestamp")]
         public DateTime Timestamp { get; set; }
 
-        [JsonProperty("car_name")]
+        [JsonProperty("carName")]
         public string Car { get; set; }
 
         [JsonProperty("data")]
@@ -24,14 +24,17 @@ namespace esp32CANBUS.Models
 
     public class DataModel
     {
-        [JsonProperty("speed")]
-        public int Speed { get; set; }
+        [JsonProperty("vehicleSpeed")]
+        public float VehicleSpeed { get; set; }
 
-        [JsonProperty("rpm")]
-        public int Rpm { get; set; }
+        [JsonProperty("engineRPM")]
+        public float EngineRPM { get; set; }
 
-        [JsonProperty("engine_temperature")]
-        public int EngineTemperature { get; set; }
+        [JsonProperty("coolantTemp")]
+        public float EngineTemperature { get; set; }
+
+        [JsonProperty("throttlePosition")]
+        public float ThrottlePosition { get; set; }
     }
 
 }

@@ -1,4 +1,3 @@
-
 // C99 libraries
 #include <cstdlib>
 #include <string.h>
@@ -13,13 +12,15 @@
 #include <az_iot.h>
 #include <azure_ca.h>
 
+//CAN libraries
+#include <mcp_can.h>
+#include <SPI.h>
+
 // Additional sample headers
 #include "AzIoTSasToken.h"
 #include "SerialLogger.h"
 #include "iot_configs.h"
 
-// When developing for your own Arduino-based platform,
-// please follow the format '(ard;<platform>)'.
 #define AZURE_SDK_CLIENT_USER_AGENT "c%2F" AZ_SDK_VERSION_STRING "(ard;esp32)"
 
 // Utility macros and defines
@@ -35,6 +36,23 @@
 
 #define GMT_OFFSET_SECS (PST_TIME_ZONE * 3600)
 #define GMT_OFFSET_SECS_DST ((PST_TIME_ZONE + PST_TIME_ZONE_DAYLIGHT_SAVINGS_DIFF) * 3600)
+
+//CAN variables
+const int SPI_CS_PIN = 2;
+const int CAN_INT_PIN = 4;
+MCP_CAN CAN0(SPI_CS_PIN);
+
+float vehicleSpeed = 0.0;
+float engineRPM = 0.0;
+float coolantTemp = 0.0;
+float oilTemp = 0.0;
+float throttlePosition = 0.0;
+
+byte speedRequest[] = {0x02, 0x01, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x00};
+byte rpmRequest[] = {0x02, 0x01, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00};
+byte coolantTempRequest[] = {0x02, 0x01, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00};
+byte oilTempRequest[] = {0x02, 0x01, 0x5C, 0x00, 0x00, 0x00, 0x00, 0x00};
+byte throttlePositionRequest[] = {0x02, 0x01, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 // Translate iot_configs.h defines into variables used by the sample
 static const char* ssid = IOT_CONFIG_WIFI_SSID;
@@ -68,6 +86,8 @@ static AzIoTSasToken sasToken(
     AZ_SPAN_FROM_BUFFER(sas_signature_buffer),
     AZ_SPAN_FROM_BUFFER(mqtt_password));
 #endif // IOT_CONFIG_USE_X509_CERT
+
+
 
 static void connectToWiFi()
 {
@@ -272,6 +292,24 @@ static int initializeMqttClient()
  * @brief           Gets the number of seconds since UNIX epoch until now.
  * @return uint32_t Number of seconds.
  */
+
+static void initializeCanBus(){
+    // Initialize MCP2515 running at 8MHz with a baudrate of 500kb/s
+    if (CAN0.begin(MCP_ANY, CAN_500KBPS, MCP_8MHZ) == CAN_OK) {
+        Serial.println("MCP2515 Initialized Successfully!");
+    } else {
+        Serial.println("Error Initializing MCP2515... Check your connections and try again.");
+        while (1);
+    }
+
+    // Set normal operation mode
+    CAN0.setMode(MCP_NORMAL);
+
+    // Configure CAN interrupt pin
+    pinMode(CAN_INT_PIN, INPUT);
+    Serial.println("CAN OBD-II Data Reader");
+}
+
 static uint32_t getEpochTimeInSecs() { return (uint32_t)time(NULL); }
 
 static void establishConnection()
@@ -280,31 +318,119 @@ static void establishConnection()
   initializeTime();
   initializeIoTHubClient();
   (void)initializeMqttClient();
+  initializeCanBus();
 }
 
- static void generateTelemetryPayload()
-{
-  // Generating random values for the telemetry
-  String deviceName = "ESP32_CANBUS";  // example device name with a random number
-  unsigned long currentTimestamp = getEpochTimeInSecs();
-  String carName = "BMW_E92";  // example car name with a random number
-  int speed = random(60, 120);
-  int rpm = random(1000, 5000);
-  int engineTemperature = random(70, 120);
 
-  String formattedTime = getISO8601Time(currentTimestamp);
+void sendMessage(byte* pidMsg){
   
+   if (CAN0.sendMsgBuf(0x7DF, 0, 8, pidMsg) == CAN_OK) {
+        Serial.println("PID request sent successfully!");
+    } else {
+        Serial.println("Error sending PID request");
+    }
+  // wait for a bit to receive the message
 
-  telemetry_payload = "{";
-  telemetry_payload += "\"device\":\"" + deviceName + "\",";
-  telemetry_payload += "\"timestamp\":\"" + formattedTime + "\",";
-  telemetry_payload += "\"car_name\":\"" + carName + "\",";
-  telemetry_payload += "\"data\":{";
-  telemetry_payload += "\"speed\":" + String(speed) + ",";
-  telemetry_payload += "\"rpm\":" + String(rpm) + ",";
-  telemetry_payload += "\"engine_temperature\":" + String(engineTemperature);
-  telemetry_payload += "}";
-  telemetry_payload += "}";
+    // Read data, if available
+    if (!digitalRead(CAN_INT_PIN)) {
+        unsigned long replyId;
+        unsigned char dlc, data[8];
+        if (CAN0.readMsgBuf(&replyId, &dlc, data) == CAN_OK) {
+            Serial.print("Message received with ID: 0x");
+            Serial.println(replyId, HEX);
+            Serial.print("Data: ");
+            for (int i = 0; i < dlc; i++) {
+                Serial.print(data[i], HEX);
+                Serial.print(" ");
+            }
+            Serial.println();
+
+            // Filter out unexpected messages
+            if (replyId != 0x7E8 || dlc < 3) {
+                Serial.println("Unexpected reply ID or message length");
+                return;
+            }
+
+            // Verify response is for RPM PID
+            if (data[1] == 0x41 && data[2] == 0x0D) {
+              
+                int A = data[3];
+                int B = data[4];
+                vehicleSpeed = A;
+                
+                Serial.print("Vehicle speed = ");
+                Serial.println(vehicleSpeed);
+                
+            } else if (data[1] == 0x41 && data[2] == 0x0C){
+              
+                int A = data[3];
+                int B = data[4];
+                engineRPM = ((A * 256) + B) / 4.0;
+                
+                Serial.print("Engine RPM = ");
+                Serial.println(engineRPM);
+                Serial.println();
+            }
+
+            else if (data[1] == 0x41 && data[2] == 0x11){
+              
+                int A = data[3];
+                int B = data[4];
+                throttlePosition = (A * 100) / 255.0;
+                
+                Serial.print("Throttle position = ");
+                Serial.println(throttlePosition);
+                Serial.println();
+            }
+        
+        else if(data[1] == 0x41 && data[2] == 0x05){
+          
+                int A = data[3];
+                int B = data[4];
+                coolantTemp = A - 40;
+
+                Serial.print("Coolant temperature = ");
+                Serial.println(coolantTemp);
+                Serial.println();
+        }
+        else if(data[1] == 0x41 && data[2] == 0x5C){
+                int A = data[3];
+                int B = data[4];
+                float temp = A - 40;
+
+                Serial.print("Oil temperature = ");
+                Serial.println(temp);
+                Serial.println();
+        }
+        else {
+            Serial.println("Error reading message");
+        }
+    } else {
+        Serial.println("No message received");
+    }
+}
+}
+
+void generateTelemetryPayload() {
+  const int capacity = JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(5) + 200;
+  StaticJsonDocument<capacity> doc;
+
+  String deviceName = "ESP32_CANBUS";
+  unsigned long currentTimestamp = getEpochTimeInSecs();
+  String carName = "BMW E92";
+  String formattedTime = getISO8601Time(currentTimestamp);
+
+  doc["device"] = deviceName;
+  doc["timestamp"] = formattedTime;
+  doc["carName"] = carName;
+  doc["data"]["vehicleSpeed"] = vehicleSpeed;
+  doc["data"]["engineRPM"] = engineRPM;
+  doc["data"]["coolantTemp"] = coolantTemp;
+  doc["data"]["throttlePosition"] = throttlePosition;
+
+
+  // Serialize JSON document to String
+  serializeJson(doc, telemetry_payload);
 }
 
 String getISO8601Time(unsigned long epochTime) {
@@ -373,6 +499,17 @@ void loop()
 #endif
   else if (millis() > next_telemetry_send_time_ms)
   {
+        // Send PID request for RPM
+    sendMessage(speedRequest);
+    delay(100);
+    sendMessage(coolantTempRequest);
+    delay(100);
+    sendMessage(rpmRequest);
+    delay(100);
+    sendMessage(oilTempRequest);
+    delay(100);
+    sendMessage(throttlePositionRequest);
+
     sendTelemetry();
     next_telemetry_send_time_ms = millis() + TELEMETRY_FREQUENCY_MILLISECS;
   }

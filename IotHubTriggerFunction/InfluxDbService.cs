@@ -27,9 +27,10 @@ namespace esp32CANBUS
             var point = PointData.Measurement("CarData")
             .SetTag("Device", data.Device)
             .SetTag("Car", data.Car)
-            .SetField("Speed", data.Data.Speed)
-            .SetField("RPM", data.Data.Rpm)
+            .SetField("Speed", data.Data.VehicleSpeed)
+            .SetField("RPM", data.Data.EngineRPM)
             .SetField("EngineTemperature", data.Data.EngineTemperature)
+            .SetField("ThrottlePosition", data.Data.ThrottlePosition)
             .SetTimestamp(data.Timestamp);
 
            await _client.WritePointAsync(point);
