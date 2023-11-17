@@ -12,7 +12,7 @@ npm-debug.log
 yarn-error.log
 
 # .gitignore
-/src/environments/*
+/src/enviroments/*
 
 
 # IDEs and editors
