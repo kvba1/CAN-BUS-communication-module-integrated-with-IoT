@@ -1,20 +1,27 @@
 <mat-toolbar color="primary" class="justify-between">
-    <a routerLink="home">CAR DASHBOARD</a>
-    <div>
-        <button mat-icon-button routerLink="home">
-            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
-        </button>
-        <button mat-icon-button (click)="openLink('https://github.com/kvba1/')">
-            <mat-icon>person</mat-icon>
-        </button>
-        <!-- In your component.html file -->
-        <button mat-icon-button aria-label="Example icon button with a heart icon"
-            (click)="openLink('https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT')">
-            <mat-icon>share</mat-icon>
-        </button>
-
-    </div>
+  <a routerLink="home">CAR DASHBOARD</a>
+  <div>
+    <button mat-icon-button routerLink="home">
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Example home icon"
+        fontIcon="home"
+      ></mat-icon>
+    </button>
+    <button mat-icon-button (click)="openLink('https://github.com/kvba1/')">
+      <mat-icon>person</mat-icon>
+    </button>
+    <!-- In your component.html file -->
+    <button
+      mat-icon-button
+      aria-label="Example icon button with a heart icon"
+      (click)="
+        openLink(
+          'https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT'
+        )
+      "
+    >
+      <mat-icon>share</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>
-
-
-

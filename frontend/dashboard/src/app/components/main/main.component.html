@@ -1,56 +1,71 @@
 <div class="m-4">
-    <mat-card style="height: auto;">
-        <div class="flex justify-between m-2 px-4">
-            <div>
-                <div>
-                    <button mat-button [matMenuTriggerFor]="lastTime">
-                        <mat-icon>expand_more</mat-icon>
-                        Last: {{selectedLastTime}}
-                    </button>
-                </div>
-                
-                <mat-menu #lastTime="matMenu">
-                    <button mat-menu-item (click)="onLastChange('1h')">1h</button>
-                    <button mat-menu-item (click)="onLastChange('3h')">3h</button>
-                    <button mat-menu-item (click)="onLastChange('6h')">6h</button>
-                    <button mat-menu-item (click)="onLastChange('12h')">12h</button>
-                    <button mat-menu-item (click)="onLastChange('2d')">2d</button>
-                    <button mat-menu-item (click)="onLastChange('14d')">14d</button>
-                    <button mat-menu-item (click)="onLastChange('1mo')">1mo</button>
-                    <button mat-menu-item (click)="onLastChange('3mo')">3mo</button>
-                </mat-menu>
-            </div>
-            <div>
-                <button mat-button [matMenuTriggerFor]="refreshTime">
-                    Refresh: {{selectedRefreshTime}}
-                    <mat-icon>expand_more</mat-icon>
-                </button>
-                <mat-menu #refreshTime="matMenu">
-                    <button mat-menu-item (click)="onRefreshChange('10s')">10s</button>
-                    <button mat-menu-item (click)="onRefreshChange('30s')">30s</button>
-                    <button mat-menu-item (click)="onRefreshChange('1m')">1m</button>
-                    <button mat-menu-item (click)="onRefreshChange('5m')">5m</button>
-                </mat-menu>
-            </div>
+  <mat-card style="height: auto">
+    <div class="flex justify-between m-2 px-4">
+      <div>
+        <div>
+          <button mat-button [matMenuTriggerFor]="lastTime">
+            <mat-icon>expand_more</mat-icon>
+            Last: {{ selectedLastTime }}
+          </button>
         </div>
-        
 
-    </mat-card>
+        <mat-menu #lastTime="matMenu">
+          <button mat-menu-item (click)="onLastChange('1h')">1h</button>
+          <button mat-menu-item (click)="onLastChange('3h')">3h</button>
+          <button mat-menu-item (click)="onLastChange('6h')">6h</button>
+          <button mat-menu-item (click)="onLastChange('12h')">12h</button>
+          <button mat-menu-item (click)="onLastChange('2d')">2d</button>
+          <button mat-menu-item (click)="onLastChange('14d')">14d</button>
+          <button mat-menu-item (click)="onLastChange('1mo')">1mo</button>
+          <button mat-menu-item (click)="onLastChange('3mo')">3mo</button>
+        </mat-menu>
+      </div>
+      <div>
+        <button mat-button [matMenuTriggerFor]="refreshTime">
+          Refresh: {{ selectedRefreshTime }}
+          <mat-icon>expand_more</mat-icon>
+        </button>
+        <mat-menu #refreshTime="matMenu">
+          <button mat-menu-item (click)="onRefreshChange('10s')">10s</button>
+          <button mat-menu-item (click)="onRefreshChange('30s')">30s</button>
+          <button mat-menu-item (click)="onRefreshChange('1m')">1m</button>
+          <button mat-menu-item (click)="onRefreshChange('5m')">5m</button>
+        </mat-menu>
+      </div>
+    </div>
+  </mat-card>
 
-    <mat-card>     
-        <mat-card-content><app-chart [dataType]="'Speed'" [refreshTime]="refreshTimeNumber" [lastTime]="selectedLastTime"></app-chart></mat-card-content>
-    </mat-card>
-    
-    <mat-card>
-        <mat-card-content><app-chart [dataType]="'RPM'" [refreshTime]="refreshTimeNumber" [lastTime]="selectedLastTime"></app-chart></mat-card-content>
-    </mat-card>
+  <mat-card>
+    <mat-card-content
+      ><app-chart
+        [dataType]="'Speed'"
+        [refreshTime]="refreshTimeNumber"
+        [lastTime]="selectedLastTime"
+      ></app-chart
+    ></mat-card-content>
+  </mat-card>
 
-    <mat-card>
-        <mat-card-content><app-chart [dataType]="'EngineTemperature'" [refreshTime]="refreshTimeNumber" [lastTime]="selectedLastTime"></app-chart></mat-card-content>
-    </mat-card>
+  <mat-card>
+    <mat-card-content
+      ><app-chart
+        [dataType]="'RPM'"
+        [refreshTime]="refreshTimeNumber"
+        [lastTime]="selectedLastTime"
+      ></app-chart
+    ></mat-card-content>
+  </mat-card>
 
-    <!-- <mat-card>
+  <mat-card>
+    <mat-card-content
+      ><app-chart
+        [dataType]="'EngineTemperature'"
+        [refreshTime]="refreshTimeNumber"
+        [lastTime]="selectedLastTime"
+      ></app-chart
+    ></mat-card-content>
+  </mat-card>
+
+  <!-- <mat-card>
         <mat-card-content><app-chart></app-chart></mat-card-content>
     </mat-card> -->
 </div>
-

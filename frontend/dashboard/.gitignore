@@ -11,6 +11,10 @@
 npm-debug.log
 yarn-error.log
 
+# .gitignore
+/src/enviroments/*
+
+
 # IDEs and editors
 .idea/
 .project
@@ -25,7 +29,8 @@ yarn-error.log
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
-!.vscode/extensions.json
+!.vscode/ext
+sions.json
 .history/*
 
 # Miscellaneous
