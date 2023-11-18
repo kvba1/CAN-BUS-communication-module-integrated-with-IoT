@@ -2,7 +2,6 @@
 using esp32CANBUS.Models;
 using InfluxDB3.Client;
 using InfluxDB3.Client.Write;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System;
 using System.Threading.Tasks;
 
