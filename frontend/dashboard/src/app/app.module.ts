@@ -24,6 +24,7 @@ import { MainComponent } from './components/main/main.component';
 import { NgChartsModule } from 'ng2-charts';
 import { ChartComponent } from './components/chart/chart.component';
 import { AboutComponent } from './components/about/about.component';
+import { CarInfoComponent } from './car-info/car-info.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { AboutComponent } from './components/about/about.component';
     MainComponent,
     ChartComponent,
     AboutComponent,
+    CarInfoComponent,
   ],
   imports: [
     BrowserModule,
