@@ -43,6 +43,8 @@ const int SPI_CS_PIN = 2;
 const int CAN_INT_PIN = 4;
 MCP_CAN CAN0(SPI_CS_PIN);
 
+bool engineStart = false;
+
 float vehicleSpeed = 0.0;
 float engineRPM = 0.0;
 float coolantTemp = 0.0;
@@ -367,7 +369,7 @@ void sendMessage(byte* pidMsg){
                 int A = data[3];
                 int B = data[4];
                 engineRPM = ((A * 256) + B) / 4.0;
-                
+                if (engineRPM > 0) engineStart = true;
                 Serial.print("Engine RPM = ");
                 Serial.println(engineRPM);
                 Serial.println();
@@ -410,6 +412,7 @@ void sendMessage(byte* pidMsg){
         Serial.println("No message received");
     }
 }
+delay(100);
 }
 
 void generateTelemetryPayload() {
@@ -504,18 +507,17 @@ void loop()
 #endif
   else if (millis() > next_telemetry_send_time_ms)
   {
-    // Send PID request for RPM
+    // Send PID request
     sendMessage(speedRequest);
-    delay(100);
     sendMessage(coolantTempRequest);
-    delay(100);
     sendMessage(rpmRequest);
-    delay(100);
     sendMessage(oilTempRequest);
-    delay(100);
     sendMessage(throttlePositionRequest);
 
+    if (engineStart){
     sendTelemetry();
+    }
+
     next_telemetry_send_time_ms = millis() + TELEMETRY_FREQUENCY_MILLISECS;
   }
 }
