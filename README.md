@@ -15,7 +15,7 @@ Real life photo after assembling circuit:
 
 ![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/5e9c3b22-f54e-4cec-854b-adf37821d28d)
 
-Web application implemented in Angular with Chart.js:
+Web application to visualize car data implemented in Angular with Chart.js:
 
 ![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/48995e7c-ec93-461e-a724-2b5abcc3b94f)
 
