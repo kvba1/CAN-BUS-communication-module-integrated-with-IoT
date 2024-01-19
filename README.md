@@ -11,7 +11,7 @@ Data flow diagram:
 
 ![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/175c2792-51f3-4bba-9e19-bf71b4daef6c)
 
-Real life photo after assembling circuit:
+Real life photo after assembling circuit with 3D printed cover:
 
 ![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/5e9c3b22-f54e-4cec-854b-adf37821d28d)
 
