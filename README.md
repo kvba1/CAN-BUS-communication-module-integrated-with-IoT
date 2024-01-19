@@ -4,7 +4,7 @@
 
 Data flow diagram:
 
-![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/a44e3b29-5281-423e-a3ae-103006d04893)
+![dataflowdiag](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/3cdfe858-f517-4c28-9eca-20bf5c38e676)
 
 
 3D Model of designed board:
