@@ -29,8 +29,15 @@ namespace esp32CANBUS.Models
         [JsonProperty("coolantTemp")]
         public float EngineTemperature { get; set; }
 
-        [JsonProperty("throttlePosition")]
-        public float ThrottlePosition { get; set; }
+        [JsonProperty("runtime")]
+        public float CarRuntime { get; set; }
+
+        [JsonProperty("engineLoad")]
+        public float EngineLoad { get; set; }
+
+        [JsonProperty("intakePressure")]
+        public float IntakePressure { get; set; }
+
     }
 
 }

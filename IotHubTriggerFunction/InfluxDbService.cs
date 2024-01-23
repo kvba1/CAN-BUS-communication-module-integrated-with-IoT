@@ -29,7 +29,9 @@ namespace esp32CANBUS
             .SetField("Speed", data.Data.VehicleSpeed)
             .SetField("RPM", data.Data.EngineRPM)
             .SetField("EngineTemperature", data.Data.EngineTemperature)
-            .SetField("ThrottlePosition", data.Data.ThrottlePosition)
+            .SetField("CarRuntime", data.Data.CarRuntime)
+            .SetField("EngineLoad",data.Data.EngineLoad)
+            .SetField("IntakePressure", data.Data.IntakePressure)
             .SetTimestamp(data.Timestamp);
 
            await _client.WritePointAsync(point);

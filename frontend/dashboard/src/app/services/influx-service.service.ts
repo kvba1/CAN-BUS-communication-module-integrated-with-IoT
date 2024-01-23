@@ -20,7 +20,7 @@ export class InfluxServiceService {
       `from(bucket: "BMWDATA")` +
       `|> range(start: -${_range})` +
       `|> filter(fn: (r) => r._measurement == "CarData")` +
-      `|> filter(fn: (r) => r._field == "${_field}")` + // Here the _field variable is dynamically inserted
+      `|> filter(fn: (r) => r._field == "${_field}")` +
       `|> filter(fn: (r) => r.Car == "BMW E92")`;
 
     return this._http.post(url, body, {

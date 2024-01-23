@@ -65,6 +65,16 @@
     ></mat-card-content>
   </mat-card>
 
+  <mat-card>
+    <mat-card-content><app-chart [dataType]="'IntakePressure'" [refreshTime]="refreshTimeNumber"
+        [lastTime]="selectedLastTime"></app-chart></mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-content><app-chart [dataType]="'EngineLoad'" [refreshTime]="refreshTimeNumber"
+        [lastTime]="selectedLastTime"></app-chart></mat-card-content>
+  </mat-card>
+
   <!-- <mat-card>
         <mat-card-content><app-chart></app-chart></mat-card-content>
     </mat-card> -->
