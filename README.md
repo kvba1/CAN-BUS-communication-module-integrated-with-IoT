@@ -11,6 +11,7 @@ Electric circuit diagram:
 ![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/0dcd50f1-b7e7-4bfa-a1b7-aaa975542e73)
 
 Board:
+
 ![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/b6ddb217-3d31-459f-b7bf-4f87a610fb4b)
 
 Web application to visualize car's data, implemented in Angular with Chart.js:
