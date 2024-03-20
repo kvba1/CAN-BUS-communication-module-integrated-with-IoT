@@ -8,16 +8,10 @@ Data flow diagram:
 
 Electric circuit diagram:
 
-![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/392aee57-ce6d-4e85-8770-562d5e06570d)
+![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/0dcd50f1-b7e7-4bfa-a1b7-aaa975542e73)
 
-
-3D Model of designed board:
-
-![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/175c2792-51f3-4bba-9e19-bf71b4daef6c)
-
-Real life photo after assembling circuit with 3D printed cover:
-
-![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/5e9c3b22-f54e-4cec-854b-adf37821d28d)
+Board:
+![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/b6ddb217-3d31-459f-b7bf-4f87a610fb4b)
 
 Web application to visualize car's data, implemented in Angular with Chart.js:
 
