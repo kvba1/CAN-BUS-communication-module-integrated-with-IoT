@@ -1,3 +1,4 @@
 esp32canbustelemetry/iot_configs.h
-
+frontend/dashboard/package-lock.json 
 .vs/
+frontend/dashboard/src/enviroments/*
