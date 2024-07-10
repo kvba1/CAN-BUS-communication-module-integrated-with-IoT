@@ -20,7 +20,7 @@ docker run -d -p 8080:8080 dashboard-app
 
 ![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/b6ddb217-3d31-459f-b7bf-4f87a610fb4b)
 
-Web application to visualize car's data, implemented in Angular with Chart.js:
+## Web application to visualize car's data, implemented in Angular with Chart.js:
 
 ![obraz](https://github.com/kvba1/CAN-BUS-communication-module-integrated-with-IoT/assets/128424095/48995e7c-ec93-461e-a724-2b5abcc3b94f)
 
